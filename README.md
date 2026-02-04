@@ -8,92 +8,47 @@ To write a program to predict the price of the house and number of occupants in 
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1.Import the required library and read the dataframe. 
 
-2.Write a function computeCost to generate the cost function. 
+1.Import the required packages and print the present data.
 
-3.Perform iterations og gradient steps with learning rate. 
+2.Print the placement data and salary data.
 
-4.Plot the Cost function using Gradient Descent and generate the required graph.
+3.Find the null and duplicate values.
+
+4.Using logistic regression find the predicted values of accuracy , confusion matrices.
+
+5.Display the results.
 
 ## Program:
 ```
+from sklearn.linear_model import SGDRegressor
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 
-# -----------------------
-# Load dataset
-# -----------------------
-data = pd.read_csv("ex3.csv")
+# Sample data (2 features)
+X = np.array([[1,2],[2,1],[3,4],[4,3],[5,5]])
+y = np.array([5,6,9,10,13])
 
-x = data["R&D Spend"].values
-y = data["Profit"].values
+# Create model
+model = SGDRegressor(max_iter=1000, eta0=0.01, learning_rate='constant')
 
-# -----------------------
-# Feature Scaling (IMPORTANT)
-# -----------------------
-x = (x - np.mean(x)) / np.std(x)
+# Train model
+model.fit(X, y)
 
-# -----------------------
-# Parameters
-# -----------------------
-w = 0.0          # weight
-b = 0.0          # bias
-alpha = 0.01     # learning rate
-epochs = 100
-n = len(x)
+# Check learned weights
+print("Weights:", model.coef_)
+print("Bias:", model.intercept_)
 
-losses = []
+# Predict
+y_pred = model.predict(X)
 
-# -----------------------
-# Gradient Descent
-# -----------------------
-for i in range(epochs):
-    # Prediction
-    y_hat = w * x + b
-
-    # Loss (MSE)
-    loss = np.mean((y_hat - y) ** 2)
-    losses.append(loss)
-
-    # Gradients
-    dw = (2/n) * np.sum((y_hat - y) * x)
-    db = (2/n) * np.sum(y_hat - y)
-
-    # Update parameters
-    w = w - alpha * dw
-    b = b - alpha * db
-
-# -----------------------
-# Plots
-# -----------------------
-plt.figure(figsize=(12, 5))
-
-# Loss vs Iterations
-plt.subplot(1, 2, 1)
-plt.plot(losses)
-plt.xlabel("Iterations")
-plt.ylabel("Loss (MSE)")
-plt.title("Loss vs Iterations")
-
-# Regression Line
-plt.subplot(1, 2, 2)
-plt.scatter(x, y, label="Data")
-plt.plot(x, w * x + b, label="Regression Line")
-plt.xlabel("R&D Spend (scaled)")
-plt.ylabel("Profit")
-plt.title("Linear Regression using Gradient Descent")
-plt.legend()
-
-plt.tight_layout()
+# Plot Actual vs Predicted
+plt.scatter(y, y_pred)
+plt.xlabel("Actual y")
+plt.ylabel("Predicted y")
+plt.title("Actual vs Predicted (SGDRegressor)")
+plt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--')  # Perfect prediction line
 plt.show()
-
-# -----------------------
-# Final Parameters
-# -----------------------
-print("Final Weight (w):", w)
-print("Final Bias (b):", b)
 
 /*
 Program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor.
@@ -103,7 +58,7 @@ RegisterNumber: 212225040350
 ```
 
 ## Output:
-<img width="1282" height="579" alt="image" src="https://github.com/user-attachments/assets/caaf12be-3887-4338-9819-d2e2772b50cd" />
+<img width="749" height="639" alt="image" src="https://github.com/user-attachments/assets/750bfdd6-ed22-4e3e-bc6a-4341cb78a0c3" />
 
 
 ## Result:
